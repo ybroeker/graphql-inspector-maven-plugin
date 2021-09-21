@@ -1,9 +1,9 @@
 package com.github.ybroeker.maven.plugins.graphql_inspector;
 
-import java.lang.invoke.MethodHandles;
-import java.nio.file.attribute.*;
+import java.nio.file.attribute.FileAttribute;
+import java.nio.file.attribute.PosixFilePermission;
+import java.nio.file.attribute.PosixFilePermissions;
 import java.util.Set;
-import java.util.logging.Logger;
 
 import org.apache.maven.plugin.MojoExecutionException;
 

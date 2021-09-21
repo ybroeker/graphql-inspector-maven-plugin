@@ -84,7 +84,9 @@ public class ValidateMojo extends AbstractGraphqlInspectorMojo {
         for (final String line : out.split("\\R+")) {
             handleLine(line);
         }
-        if (status!=0) handleNonZeroExit(status);
+        if (status!=0) {
+            handleNonZeroExit(status);
+        }
     }
 
     private void handleLine(String logLine) {

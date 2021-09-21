@@ -1,9 +1,16 @@
 package com.github.ybroeker.maven.plugins.graphql_inspector;
 
 import java.io.IOException;
-import java.nio.file.*;
+import java.nio.file.DirectoryNotEmptyException;
+import java.nio.file.FileAlreadyExistsException;
+import java.nio.file.FileSystemException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
 import java.util.UUID;
 
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import net.lingala.zip4j.ZipFile;
 import net.lingala.zip4j.exception.ZipException;
 import org.apache.maven.plugin.MojoExecutionException;
@@ -14,7 +21,9 @@ import org.eclipse.aether.RepositorySystem;
 import org.eclipse.aether.RepositorySystemSession;
 import org.eclipse.aether.artifact.Artifact;
 import org.eclipse.aether.artifact.DefaultArtifact;
-import org.eclipse.aether.resolution.*;
+import org.eclipse.aether.resolution.ArtifactRequest;
+import org.eclipse.aether.resolution.ArtifactResolutionException;
+import org.eclipse.aether.resolution.ArtifactResult;
 
 
 public class ArtifactResolver {
@@ -26,7 +35,7 @@ public class ArtifactResolver {
     private static final Object RESOLUTION_LOCK = new Object();
     private static final Object EXTRACTION_LOCK = new Object();
 
-    protected final MavenProject project;
+    private final MavenProject project;
 
     private final boolean extractToTargetDirectory;
 
@@ -38,6 +47,7 @@ public class ArtifactResolver {
 
     private final Log log;
 
+    @SuppressFBWarnings("EI_EXPOSE_REP2")
     public ArtifactResolver(final MavenProject project, final boolean extractToTargetDirectory, final RepositorySystemSession repositorySystemSession, final PluginDescriptor pluginDescriptor, final RepositorySystem repositorySystem, final Log log) {
         this.project = project;
         this.extractToTargetDirectory = extractToTargetDirectory;

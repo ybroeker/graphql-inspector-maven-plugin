@@ -1,0 +1,4 @@
+type SomeType {
+    bar: String
+    foo: String @deprecated
+}
